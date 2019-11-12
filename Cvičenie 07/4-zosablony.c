@@ -9,7 +9,7 @@ int delitele(int x[], int pocetx, int y[], int k)
 	int pocety = 0;
 	if (k >= 0) {
 		for(i=0;i<pocetx;i++){
-			if(k % x[i] == 0) {
+			if(x[i] > 0 && k % x[i] == 0) {
 				y[pocety] = x[i];
 				pocety++;
 			}

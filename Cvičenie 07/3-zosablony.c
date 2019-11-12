@@ -9,7 +9,7 @@ int nasobky(int x[], int pocetx, int y[], int k)
 	int pocety = 0;
 	if (k >= 0) {
 		for(i=0;i<pocetx;i++){
-			if(x[i] % k == 0) {
+			if((k == 0 && x[i] == 0) || (k != 0 && x[i] % k == 0)) {
 				y[pocety] = x[i];
 				pocety++;
 			}
