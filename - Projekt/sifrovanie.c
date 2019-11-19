@@ -9,6 +9,13 @@ int nacitanie_textu(char *p, int n, int *pn) {
 		printf("Spravu sa nepodarilo nacitat\n");
 		return 0;
 	}
+	if ((c = getc(fr)) == EOF) {
+		printf("Spravu sa nepodarilo nacitat\n");
+		return 0;
+	}
+	else {
+		ungetc(c,fr);
+	}
 	while ((c = getc(fr)) != EOF && i <= n) {
 		p[i] = c;
 		pocet_znakov++;
@@ -70,13 +77,72 @@ int vypis_sifrovany(char* u, int un) {
 	return 0;
 }
 
-int vypis_slov_dlzky() {
-	printf("vypis_slov_dlzky pojde sem\n");
+int vypis_slov_dlzky(char* p, int pn) {
+	int k;
+	int x;
+	char *q = p;
+	char *r;
+	if (pn == 0) {
+		printf("Sprava nie je nacitana\n");
+		return 0;
+	}
+	scanf("%d", &k);
+	if (k >= 1 && k <= 100) {
+		x = 1;
+		while(1) {
+			if(*q == ' ' || pn == q-p || *q == '\n') {
+				if(x == k+1){
+					/* ked sa najde slovo danej dlzky */
+					for(r=q-k;r<q;r++)
+						putchar(*r);
+					putchar('\n');
+				}
+				x = 0;
+			}
+			if(pn == q-p)
+				break;
+			x++;
+			q++;
+		}
+	}
 	return 0;
 }
 
-int vypis_histogramu() {
-	printf("vypis_histogramu pojde sem\n");
+int vypis_histogramu(char* u, int un) {
+	int i;
+	int n = 26;
+	char c[n+1];
+	char *q = u;
+	char *r = c;
+	if (un == 0) {
+		printf("Nie je k dispozicii upravena sprava\n");
+		return 0;
+	}
+	/* vynulovanie pola c */
+	for(i=0;i<n;i++)
+		c[i]=0;
+	c[i+1] = '\0';
+	/* pripocitavanie do pola c pre vsetky pismena abecedy */
+	while(*q != '\0') {
+		i = -1;
+		
+		/* aby sa male aj velke pismena pripocitavali do rovnakeho indexu
+		if(*q >= 'a' && *q <= 'z') {
+			i = (int)(*q-'a');
+		}
+		else if...*/
+		if(*q >= 'A' && *q <= 'Z') {
+			i = (int)(*q-'A');
+		}
+		
+		if (i >= 0)
+			c[i]++;
+		q++;
+	}
+	printf("Pocet a: %d\n",c[0]);
+	printf("Pocet b: %d\n",c[1]);
+	printf("Pocet t: %d\n",c[19]);
+	printf("ABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
 	return 0;
 }
 
@@ -98,8 +164,8 @@ int main() {
 			case 'v': vypis_povodny(p, pn); 	break;
 			case 'u': uprava_textu(p,u,pn,&un); break;
 			case 's': vypis_sifrovany(u, un);	break;
-			case 'd': vypis_slov_dlzky();		break;
-			case 'h': vypis_histogramu(); 		break;
+			case 'd': vypis_slov_dlzky(p,pn);	break;
+			case 'h': vypis_histogramu(u,un);	break;
 			case 'c': rozsifrovanie();			break;
 			case 'k': return 0;				
 			default : break;				
